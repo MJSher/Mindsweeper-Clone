@@ -233,49 +233,53 @@ var checkLabels = function() {
         
         for (var j = 0; j < 20; j++) {
             
-            if (i === 0 && j === 0) {
-                
-                grid[0][0].label = (grid[0][1].isBomb + grid[1][1].isBomb + grid[1][0].isBomb).toString();
-                
-            }
-            else if (i === 0 && j === 19)   {
-                
-                grid[0][19].label = (grid[0][18].isBomb + grid[1][18].isBomb + grid[1][19].isBomb).toString();
-                
-            }
-            else if (i === 14 && j === 0)   {
-                
-                grid[14][0].label = (grid[14][1].isBomb + grid[13][1].isBomb + grid[13][0].isBomb).toString();
-                
-            }
-            else if (i === 14 && j === 19)  {
-                
-                grid[14][19].label = (grid[14][18].isBomb + grid[13][18].isBomb + grid[13][19].isBomb).toString();
-                
-            }
-            else if (i === 0)   {
-                
-                grid[i][j].label = (grid[i][j-1].isBomb + grid[i][j+1].isBomb + grid[i+1][j-1].isBomb + grid[i+1][j].isBomb + grid[i+1][j+1].isBomb).toString();
-                
-            }
-            else if (i === 14)  {
-                
-                grid[i][j].label = (grid[i][j-1].isBomb + grid[i][j+1].isBomb + grid[i-1][j-1].isBomb + grid[i-1][j].isBomb + grid[i-1][j+1].isBomb).toString();
-                
-            }
-            else if (j === 0)   {
-                
-                grid[i][j].label = (grid[i-1][j].isBomb + grid[i+1][j].isBomb + grid[i-1][j+1].isBomb + grid[i][j+1].isBomb + grid[i+1][j+1].isBomb).toString();
-                
-            }
-            else if (j === 19)  {
-                
-                grid[i][j].label = (grid[i-1][j].isBomb + grid[i+1][j].isBomb + grid[i-1][j-1].isBomb + grid[i][j-1].isBomb + grid[i+1][j-1].isBomb).toString();
-                
-            }
-            else                {
-                
-                grid[i][j].label = (grid[i-1][j-1].isBomb + grid[i-1][j].isBomb + grid[i-1][j+1].isBomb + grid[i][j-1].isBomb + grid[i][j+1].isBomb + grid[i+1][j-1].isBomb + grid[i+1][j].isBomb + grid[i+1][j+1].isBomb).toString();
+            if (grid[i][j].isBomb !== 1) {
+            
+                if (i === 0 && j === 0) {
+                    
+                    grid[0][0].label = (grid[0][1].isBomb + grid[1][1].isBomb + grid[1][0].isBomb).toString();
+                    
+                }
+                else if (i === 0 && j === 19)   {
+                    
+                    grid[0][19].label = (grid[0][18].isBomb + grid[1][18].isBomb + grid[1][19].isBomb).toString();
+                    
+                }
+                else if (i === 14 && j === 0)   {
+                    
+                    grid[14][0].label = (grid[14][1].isBomb + grid[13][1].isBomb + grid[13][0].isBomb).toString();
+                    
+                }
+                else if (i === 14 && j === 19)  {
+                    
+                    grid[14][19].label = (grid[14][18].isBomb + grid[13][18].isBomb + grid[13][19].isBomb).toString();
+                    
+                }
+                else if (i === 0)   {
+                    
+                    grid[i][j].label = (grid[i][j-1].isBomb + grid[i][j+1].isBomb + grid[i+1][j-1].isBomb + grid[i+1][j].isBomb + grid[i+1][j+1].isBomb).toString();
+                    
+                }
+                else if (i === 14)  {
+                    
+                    grid[i][j].label = (grid[i][j-1].isBomb + grid[i][j+1].isBomb + grid[i-1][j-1].isBomb + grid[i-1][j].isBomb + grid[i-1][j+1].isBomb).toString();
+                    
+                }
+                else if (j === 0)   {
+                    
+                    grid[i][j].label = (grid[i-1][j].isBomb + grid[i+1][j].isBomb + grid[i-1][j+1].isBomb + grid[i][j+1].isBomb + grid[i+1][j+1].isBomb).toString();
+                    
+                }
+                else if (j === 19)  {
+                    
+                    grid[i][j].label = (grid[i-1][j].isBomb + grid[i+1][j].isBomb + grid[i-1][j-1].isBomb + grid[i][j-1].isBomb + grid[i+1][j-1].isBomb).toString();
+                    
+                }
+                else                {
+                    
+                    grid[i][j].label = (grid[i-1][j-1].isBomb + grid[i-1][j].isBomb + grid[i-1][j+1].isBomb + grid[i][j-1].isBomb + grid[i][j+1].isBomb + grid[i+1][j-1].isBomb + grid[i+1][j].isBomb + grid[i+1][j+1].isBomb).toString();
+                    
+                }
                 
             }
             
