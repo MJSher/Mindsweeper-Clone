@@ -73,7 +73,7 @@ var Tile = function(x,y,i,j) {
     this.isBomb = 0;
     this.hasFlag = false;
     this.clicked = false;
-    this.label = "0";
+    this.label = "";
     
     
 };
