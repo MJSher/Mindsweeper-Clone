@@ -626,7 +626,7 @@ mouseReleased = function () {
     
     mouseClicked = true;
     
-    if (currentScene === 0 && startButton.mouseIsInside()) {
+    if (currentScene === 0 && startButton.isMouseInside()) {
         
         currentScene = 1;
         
