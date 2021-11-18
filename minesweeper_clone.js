@@ -5,8 +5,11 @@ By Madison and JD
 */
     
 //VARIABLES
-var currentScene = 1;
+var currentScene = 0;
 var numberOfFlags = 25;
+var time = 0;
+var startTime = 0;
+var mouseClicked;
 textFont(createFont('monospace'));
 
 //BITMOJIS
@@ -47,9 +50,7 @@ Button.prototype.handleMouseClick = function() {
 };
 
 /*
-
 BUTTON TEMPLATE
-
 var button = new Button({
     x: ,
     y: ,
@@ -58,7 +59,6 @@ var button = new Button({
         
     }
 });
-
 */
     
 
@@ -304,6 +304,37 @@ var makeBombs = function() {
     
 };
 
+var clearNeighbors = function(i,j) {
+    
+    if (i >= 0 && i <= 14 && j >= 0 && j <= 19) {
+        
+        if (grid[i][j].hasFlag === true || grid[i][j].clicked === true) {}
+        else if (grid[i][j].label === "0") {
+            
+            grid[i][j].clicked = true;
+            grid[i][j].draw();
+            
+            clearNeighbors(i-1,j-1);
+            clearNeighbors(i-1,j);
+            clearNeighbors(i-1,j+1);
+            clearNeighbors(i,j-1);
+            clearNeighbors(i,j+1);
+            clearNeighbors(i+1,j-1);
+            clearNeighbors(i+1,j);
+            clearNeighbors(i+1,j+1);
+            
+        }
+        else {
+            
+            grid[i][j].clicked = true;
+            grid[i][j].draw();
+            
+        }
+    
+    }
+    
+};
+
 //RUN CHECK FOR ALL LABELS AND BOMB SQUARES
 
 makeBombs();
@@ -320,12 +351,12 @@ var gameplay = function() {
         
         for (var j = 0; j < 20; j++) {
             
-            if (grid[i][j].mouseIsInside() && mouseButton === LEFT && !grid[i][j].hasFlag) {
+            if (millis() - startTime > 100 && mouseClicked && grid[i][j].mouseIsInside() && mouseButton === LEFT && !grid[i][j].hasFlag && !grid[i][j].clicked) {
                 
-                grid[i][j].clicked = true;
+                clearNeighbors(i,j);
                 
             }
-            else if (grid[i][j].mouseIsInside() && mouseButton === RIGHT) {
+            else if (mouseClicked && grid[i][j].mouseIsInside() && mouseButton === RIGHT) {
                 
                 if (numberOfFlags > 0 && !grid[i][j].hasFlag && !grid[i][j].clicked) {
                     
@@ -364,31 +395,53 @@ var gameplay = function() {
     //NUMBER BOX
     fill(0, 0, 0);
     rect(15,15,100,70);
+    rect(285,15,100,70);
     
     //NUMBERS
     fill(255, 0, 0);
     textAlign(RIGHT,BOTTOM);
     textSize(50);
-    text(numberOfFlags.toString(),115,75);
+    text(numberOfFlags.toString(),106,75);
+    text(time,377,75);
     
 };
 
+//MAIN DRAW LOOP
 
+draw = function() {
+    
+    time = floor((millis() - startTime)/1000);
+    
+    if (currentScene === 0) {}
+    else if (currentScene === 1){
+        
+        gameplay();
+        
+    }
+    
+    mouseClicked = false;
+    
+};
 
 //WHEN MOUSE RELEASED
 
 //Not done
 mouseReleased = function () {
     
+    mouseClicked = true;
+    
     if (currentScene === 0 && true) {
         
         currentScene = 1;
         
+        startTime = millis();
+        
     }
     
-    if (currentScene === 1) {
+    if (currentScene === 1 && true) {
         
-        gameplay();
+        currentScene = 1;
+        //gameplay();
         
     }
     
