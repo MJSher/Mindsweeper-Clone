@@ -14,6 +14,133 @@ textFont(createFont('monospace'));
 
 //BITMOJIS
 //bitmojis here
+//Madison Bitmoji
+var drawHead = function(bitX, bitY, bitHeight) {
+    stroke(0, 0, 0);
+    strokeWeight(1.5);
+    fill(112, 92, 71); //Hair Color
+    ellipse(bitX + (bitHeight/148*85.5), bitY + (bitHeight/148*79), (bitHeight/148*97),         (bitHeight/148*97)); //Hair base
+    triangle(bitX + (bitHeight/148*85.5), bitY + (bitHeight/148*144), bitX + (bitHeight/148    *152), bitY + (bitHeight/148*76), bitX + (bitHeight/148*20), bitY + (bitHeight/148*76)); //     Hair Point 1
+    triangle(bitX +  (bitHeight/148*85.5), bitY + (bitHeight/148*85), bitX +  (bitHeight/148    *138), bitY + (bitHeight/148*112), bitX + (bitHeight/148*30), bitY + (bitHeight/148*112));     //Hair Point 2
+    noStroke();
+    rect(bitX + (bitHeight/148*45), bitY + (bitHeight/148*72), (bitHeight/148*79), (bitHeight    /148*39)); //to hide lines
+    stroke(0, 0, 0);
+    fill(255, 243, 219); //Skin Color
+    rect(bitX + (bitHeight/148*74), bitY + (bitHeight/148*98), (bitHeight/148*22), (bitHeight    /148*50)); //neck
+    rect(bitX + (bitHeight/148*50), bitY + (bitHeight/148*52), (bitHeight/148*70), (bitHeight    /148*63)); // Face base
+    arc(bitX + (bitHeight/148*85.5), bitY + (bitHeight/148*113), (bitHeight/148*70), (bitHeight/148*37), 0, 180); //Chin
+    arc(bitX + (bitHeight/148*85.5), bitY + (bitHeight/148*113), (bitHeight/148*27), (bitHeight/148*13), 0, 180); //smile
+    triangle(bitX + (bitHeight/148*85), bitY + (bitHeight/148*73), bitX + (bitHeight/148*91), bitY + (bitHeight/148*100), bitX + (bitHeight/148*79), bitY + (bitHeight/148*100));
+    fill(255, 255, 255);
+  
+    rect(bitX + (bitHeight/148*50), bitY + (bitHeight/148*65), (bitHeight/148*30), (bitHeight/148*30)); //left glasses;
+    rect(bitX + (bitHeight/148*90), bitY + (bitHeight/148*65), (bitHeight/148*30), (bitHeight/148*30)); //right glasses;
+    line(bitX + (bitHeight/148*80), bitY + (bitHeight/148*80), bitX + (bitHeight/148*90), bitY + (bitHeight/148*80)); //glasses rim
+    fill(112, 92, 71); //Hair Color
+    fill(110, 114, 153); //Eye color
+    ellipse(bitX + (bitHeight/148*59), bitY + (bitHeight/148*80), (bitHeight/148*15), (bitHeight/148*15)); //left eye
+    ellipse(bitX + (bitHeight/148*99), bitY + (bitHeight/148*80), (bitHeight/148*15), (bitHeight/148*15)); //left eye
+    fill(112, 92, 71); //Hair Color
+    arc(bitX + (bitHeight/148*121), bitY + (bitHeight/148*47), (bitHeight/148*70), (bitHeight/148*37), 90, 180); //Bangs
+};
+var drawHoodie = function(bitX, bitY, bitHeight) {
+    strokeWeight(1.5);
+    fill(181, 242, 229); //hoodie color
+    rect(bitX + (bitHeight/148*60), bitY + (bitHeight/148*139), (bitHeight/148*50), (bitHeight/148*40)); //HOODIE
+    fill(255, 255, 255); //inner shirt color
+    triangle(bitX + (bitHeight/148*97), bitY + (bitHeight/148*140), bitX + (bitHeight/148*59), bitY + (bitHeight/148*140), bitX + (bitHeight/148*85), bitY + (bitHeight/148*150)); //inner shirt
+    fill(181, 242, 229); //hoodie color (same as other hoodie color)
+    triangle (bitX + (bitHeight/148*85), bitY + (bitHeight/148*150), bitX + (bitHeight/148*50), bitY + (bitHeight/148*140), bitX + (bitHeight/148*50), bitY + (bitHeight/148*125)); //hood left
+    triangle (bitX + (bitHeight/148*120), bitY + (bitHeight/148*140), bitX + (bitHeight/148*85), bitY + (bitHeight/148*150), bitX + (bitHeight/148*120), bitY + (bitHeight/148*125)); //hood right
+    fill(255, 255, 255); //inner shirt color
+    textSize(bitHeight/148*25);
+    text("MS", bitX + (bitHeight/148*72), bitY + (bitHeight/148*172));
+};
+var drawBitmoji = function(bitX, bitY, bitHeight) {
+ drawHead(bitX - 85, bitY - 100, (bitHeight));
+ drawHoodie(bitX - 85, bitY - 100, (bitHeight));
+};
+
+//JD Bitmoji
+var drawBitmojiFace = function(resize,bitmojiX,bitmojiY) {
+    noStroke();
+
+    fill(51, 51, 51);
+    arc(bitmojiX,2*resize/100 + bitmojiY,100*resize/100,122*resize/100,180,360); //beanie
+    
+    fill(255, 219, 172);         //skintone
+    ellipse(bitmojiX,bitmojiY,80*resize/100,100*resize/100);     //face back
+    ellipse(-40*resize/100 + bitmojiX,1*resize/100 + bitmojiY,10*resize/100,17*resize/100);      //left ear
+    ellipse(40*resize/100 + bitmojiX,1*resize/100 + bitmojiY,10*resize/100,17*resize/100);      //right ear
+    stroke(0, 0, 0);
+    arc(bitmojiX,4*resize/100 + bitmojiY,10*resize/100,10*resize/100,-90,138);  //nose
+    
+    fill(255,255,255);
+    ellipse(-17*resize/100 + bitmojiX,-10*resize/100 + bitmojiY,16*resize/100,10*resize/100);      //left whites
+    ellipse(17*resize/100 + bitmojiX,-10*resize/100 + bitmojiY,16*resize/100,10*resize/100);      //right whites
+    arc(bitmojiX,21*resize/100 + bitmojiY,41*resize/100,20*resize/100,1,180);    //mouth
+    strokeWeight(1);
+    line(-20*resize/100 + bitmojiX,21*resize/100 + bitmojiY,20*resize/100 + bitmojiX,21*resize/100 + bitmojiY);
+    line(bitmojiX,21*resize/100 + bitmojiY,bitmojiX,30*resize/100 + bitmojiY);       //center line
+    line(-7*resize/100 + bitmojiX,21*resize/100 + bitmojiY,-7*resize/100 + bitmojiX,29*resize/100 + bitmojiY);       //left line
+    line(-14*resize/100 + bitmojiX,21*resize/100 + bitmojiY,-14*resize/100 + bitmojiX,27*resize/100 + bitmojiY);       //far left line
+    line(7*resize/100 + bitmojiX,21*resize/100 + bitmojiY,7*resize/100 + bitmojiX,29*resize/100 + bitmojiY);       //right line
+    line(14*resize/100 + bitmojiX,21*resize/100 + bitmojiY,14*resize/100 + bitmojiX,27*resize/100 + bitmojiY);       //far right line
+    
+    
+    noStroke();
+    fill(99, 54, 0);             //haircolor
+    arc(1*resize/100 + bitmojiX,-24*resize/100 + bitmojiY,76*resize/100,53*resize/100,-163,32);  //hair
+    ellipse(-17*resize/100 + bitmojiX,-10*resize/100 + bitmojiY,10*resize/100,10*resize/100);      //left iris
+    ellipse(17*resize/100 + bitmojiX,-10*resize/100 + bitmojiY,10*resize/100,10*resize/100);      //right iris
+    stroke(0, 0, 0);
+    strokeWeight(3*resize/100);
+    point(-17*resize/100 + bitmojiX,-10*resize/100 + bitmojiY);              //left pupil
+    point(17*resize/100 + bitmojiX,-10*resize/100 + bitmojiY);              //right pupil
+    
+    
+    
+};
+var drawBitmojiBody = function(resize,bitmojiX,bitmojiY) {
+    noStroke();
+
+fill(255, 219, 172);
+rect(-10*resize/100 + bitmojiX,47*resize/100 + bitmojiY,20*resize/100,20*resize/100);         //neck
+rect(-75*resize/100 + bitmojiX,94*resize/100 + bitmojiY,21*resize/100,70*resize/100);         //right arm
+rect(58*resize/100 + bitmojiX,94*resize/100 + bitmojiY,21*resize/100,70*resize/100);         //left arm
+
+fill(72, 137, 207);
+rect(-46*resize/100 + bitmojiX,57*resize/100 + bitmojiY,95*resize/100,125*resize/100,35);    //shirt
+quad(-76*resize/100 + bitmojiX,95*resize/100 + bitmojiY,-54*resize/100 + bitmojiX,115*resize/100 + bitmojiY,-34*resize/100 + bitmojiX,90*resize/100 + bitmojiY,-29*resize/100 + bitmojiX,61*resize/100 + bitmojiY);//leftsleeve
+quad(80*resize/100 + bitmojiX,95*resize/100 + bitmojiY,57*resize/100 + bitmojiX,115*resize/100 + bitmojiY,44*resize/100 + bitmojiX,90*resize/100 + bitmojiY,29*resize/100 + bitmojiX,59*resize/100 + bitmojiY);//leftsleeve
+
+fill(255, 219, 172);
+arc(bitmojiX,57*resize/100 + bitmojiY,34*resize/100,34*resize/100,1,180);    //chest
+
+stroke(0,0,0);
+strokeWeight(1);
+
+line(-27*resize/100 + bitmojiX,100*resize/100 + bitmojiY,31*resize/100 + bitmojiX,100*resize/100 + bitmojiY);       //top shirt line
+line(-27*resize/100 + bitmojiX,120*resize/100 + bitmojiY,31*resize/100 + bitmojiX,120*resize/100 + bitmojiY);       //bottom shirt line
+
+fill(0, 0, 0);
+triangle(9*resize/100 + bitmojiX,120*resize/100 + bitmojiY,-2*resize/100 + bitmojiX,120*resize/100 + bitmojiY,3*resize/100 + bitmojiX,96*resize/100 + bitmojiY);
+arc(3*resize/100 + bitmojiX,93*resize/100 + bitmojiY,15*resize/100,13*resize/100,1,180);
+
+fill(0, 0, 0);
+textSize(12*resize/100);
+text("JD",22*resize/100 + bitmojiX,80*resize/100 + bitmojiY);
+
+fill(255,255,255);
+text("SALT   LIFE",-34*resize/100 + bitmojiX,115*resize/100 + bitmojiY);
+    
+};
+var drawBitmojiJD = function(resize,bitmojiX,bitmojiY) {
+    rectMode(CORNER);
+    drawBitmojiFace(resize,bitmojiX,bitmojiY);
+    drawBitmojiBody(resize,bitmojiX,bitmojiY);
+    //Hit Box = [-25,+25,-15,+50]
+};
 
 
 
@@ -28,7 +155,7 @@ var Button = function(config) {
 };
 
 Button.prototype.draw = function() {
-    fill(0, 234, 255);
+    fill(255, 255, 255);
     rect(this.x, this.y, this.width, this.height, 5);
     fill(0, 0, 0);
     textSize(19);
@@ -60,6 +187,24 @@ var button = new Button({
     }
 });
 */
+
+//START BUTTON: Starts the game
+var startButton = new Button({
+    x: 165,
+    y: 321,
+    width: 75,
+    label: "Start",
+    onClick: function() {
+        //currentScene = 1;
+        //gameScene();
+        println("This works!");
+        
+    }
+});
+
+mouseClicked = function() {
+    startButton.handleMouseClick();
+};
     
 
 
@@ -304,6 +449,7 @@ var makeBombs = function() {
     
 };
 
+
 var clearNeighbors = function(i,j) {
     
     if (i >= 0 && i <= 14 && j >= 0 && j <= 19) {
@@ -342,7 +488,55 @@ checkLabels();
 
 //SCENES
 //Not done
-var splashScreen = function() {};
+var splashScreen = function() {
+ 
+    textAlign(LEFT, BOTTOM);
+    background(168, 168, 168);
+    noStroke();
+    
+    //DARK SHADED
+    fill(82, 82, 82);
+    rect(0,0,400, 397);
+    
+    //LIGHT SHADED
+    fill(191, 191, 191);
+    rect(390,48,400, 397);
+    triangle(400,100,400,0,300,100);
+    rect(-7,397,400,97);
+    
+    //CENTER GREY
+    fill(168, 168, 168);
+    rect(3,3,394, 395);
+    
+    //SHADOW TEXT
+    fill(82, 82, 82);
+    textSize(52);
+    textFont(createFont('monospace'));
+    text("MINESWEEPER", 43, 74);
+    textSize(15);
+    text("By JD Dauphinais and Madison Sherlock", 43, 102);
+    
+    //REGULAR TEXT
+    fill(255, 255, 255);
+    textSize(52);
+    textFont(createFont('monospace'));
+    text("MINESWEEPER", 43, 71);
+    textSize(15);
+    text("By JD Dauphinais and Madison Sherlock", 43, 100);
+    
+    //Bomb
+    fill(0, 0, 0);
+    ellipse(200, 224, 70, 70);
+    rect(192, 171, 17, 50);
+    
+    drawBitmoji (321, 202, 148);
+    drawBitmojiJD(65, 83, 173);
+    noStroke();
+    
+    //Button
+    startButton.draw();
+    
+};
 
 //Not done
 var gameplay = function() {
@@ -412,7 +606,9 @@ draw = function() {
     
     time = floor((millis() - startTime)/1000);
     
-    if (currentScene === 0) {}
+    if (currentScene === 0) {
+        splashScreen();
+    }
     else if (currentScene === 1){
         
         gameplay();
