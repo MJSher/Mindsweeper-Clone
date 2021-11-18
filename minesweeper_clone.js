@@ -5,8 +5,11 @@ By Madison and JD
 */
     
 //VARIABLES
-var currentScene = 1;
+var currentScene = 0;
 var numberOfFlags = 25;
+var time = 0;
+var startTime = 0;
+var mouseClicked;
 textFont(createFont('monospace'));
 
 //BITMOJIS
@@ -348,18 +351,12 @@ var gameplay = function() {
         
         for (var j = 0; j < 20; j++) {
             
-            if (grid[i][j].mouseIsInside() && mouseButton === LEFT && !grid[i][j].hasFlag && !grid[i][j].clicked) {
-                
-                
-                
-                //Runs clickZeroes(i,j); when the current clicked tile is a zero tile
+            if (millis() - startTime > 100 && mouseClicked && grid[i][j].mouseIsInside() && mouseButton === LEFT && !grid[i][j].hasFlag && !grid[i][j].clicked) {
                 
                 clearNeighbors(i,j);
                 
-                
-                
             }
-            else if (grid[i][j].mouseIsInside() && mouseButton === RIGHT) {
+            else if (mouseClicked && grid[i][j].mouseIsInside() && mouseButton === RIGHT) {
                 
                 if (numberOfFlags > 0 && !grid[i][j].hasFlag && !grid[i][j].clicked) {
                     
@@ -398,31 +395,53 @@ var gameplay = function() {
     //NUMBER BOX
     fill(0, 0, 0);
     rect(15,15,100,70);
+    rect(285,15,100,70);
     
     //NUMBERS
     fill(255, 0, 0);
     textAlign(RIGHT,BOTTOM);
     textSize(50);
-    text(numberOfFlags.toString(),115,75);
+    text(numberOfFlags.toString(),106,75);
+    text(time,377,75);
     
 };
 
+//MAIN DRAW LOOP
 
+draw = function() {
+    
+    time = floor((millis() - startTime)/1000);
+    
+    if (currentScene === 0) {}
+    else if (currentScene === 1){
+        
+        gameplay();
+        
+    }
+    
+    mouseClicked = false;
+    
+};
 
 //WHEN MOUSE RELEASED
 
 //Not done
 mouseReleased = function () {
     
+    mouseClicked = true;
+    
     if (currentScene === 0 && true) {
         
         currentScene = 1;
         
+        startTime = millis();
+        
     }
     
-    if (currentScene === 1) {
+    if (currentScene === 1 && true) {
         
-        gameplay();
+        currentScene = 1;
+        //gameplay();
         
     }
     
