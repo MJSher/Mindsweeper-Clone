@@ -47,9 +47,7 @@ Button.prototype.handleMouseClick = function() {
 };
 
 /*
-
 BUTTON TEMPLATE
-
 var button = new Button({
     x: ,
     y: ,
@@ -58,7 +56,6 @@ var button = new Button({
         
     }
 });
-
 */
     
 
@@ -304,6 +301,37 @@ var makeBombs = function() {
     
 };
 
+var clearNeighbors = function(i,j) {
+    
+    if (i >= 0 && i <= 14 && j >= 0 && j <= 19) {
+        
+        if (grid[i][j].hasFlag === true || grid[i][j].clicked === true) {}
+        else if (grid[i][j].label === "0") {
+            
+            grid[i][j].clicked = true;
+            grid[i][j].draw();
+            
+            clearNeighbors(i-1,j-1);
+            clearNeighbors(i-1,j);
+            clearNeighbors(i-1,j+1);
+            clearNeighbors(i,j-1);
+            clearNeighbors(i,j+1);
+            clearNeighbors(i+1,j-1);
+            clearNeighbors(i+1,j);
+            clearNeighbors(i+1,j+1);
+            
+        }
+        else {
+            
+            grid[i][j].clicked = true;
+            grid[i][j].draw();
+            
+        }
+    
+    }
+    
+};
+
 //RUN CHECK FOR ALL LABELS AND BOMB SQUARES
 
 makeBombs();
@@ -320,9 +348,15 @@ var gameplay = function() {
         
         for (var j = 0; j < 20; j++) {
             
-            if (grid[i][j].mouseIsInside() && mouseButton === LEFT && !grid[i][j].hasFlag) {
+            if (grid[i][j].mouseIsInside() && mouseButton === LEFT && !grid[i][j].hasFlag && !grid[i][j].clicked) {
                 
-                grid[i][j].clicked = true;
+                
+                
+                //Runs clickZeroes(i,j); when the current clicked tile is a zero tile
+                
+                clearNeighbors(i,j);
+                
+                
                 
             }
             else if (grid[i][j].mouseIsInside() && mouseButton === RIGHT) {
