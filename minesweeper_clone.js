@@ -5,11 +5,13 @@ By Madison and JD
 */
     
 //VARIABLES
-var currentScene = 0;
+var currentScene = 1;
 var numberOfFlags = 25;
 var time = 0;
 var startTime = 0;
 var mouseClicked;
+var stillPlaying = false;
+var endGameMessage;
 textFont(createFont('monospace'));
 
 //BITMOJIS
@@ -28,12 +30,26 @@ var Button = function(config) {
 };
 
 Button.prototype.draw = function() {
-    fill(0, 234, 255);
-    rect(this.x, this.y, this.width, this.height, 5);
+    noStroke();
+    //LIGHT SHADED
+    fill(255, 255, 255);
+    rect(this.x,this.y,this.width,this.height);
+    //DARK SHADED
+    fill(122, 122, 122);
+    triangle(this.x + this.width,this.y + 10,this.x + this.width,this.y,this.x + (this.width - 10),this.y  + 10);
+    triangle(this.x,this.y + this.height,this.x + 10,this.y + (this.height - 10),this.x + 10,this.y + this.height);
+    rect(this.x + 3,this.y + 3,this.width-3,this.height-3);
+    //CENTER GREY
+    fill(224, 224, 224);
+    rect(this.x + 3,this.y + 3,this.width-6,this.height-6);
+
+
+    //TEXT
     fill(0, 0, 0);
     textSize(19);
-    textAlign(LEFT, TOP);
-    text(this.label, this.x+10, this.y+this.height/4);
+    textAlign(CENTER, CENTER);
+    text(this.label, this.x + this.width/2, this.y + this.height/2);
+
 };
 
 Button.prototype.isMouseInside = function() {
@@ -61,6 +77,38 @@ var button = new Button({
 });
 */
     
+    
+//BUTTONS
+
+//START BUTTON: Starts the game
+var startButton = new Button({
+    x: 173,
+    y: 321,
+    width: 75,
+    height: 50,
+    label: "Start",
+    onClick: function() {
+        //currentScene = 1;
+        //gameScene();
+        println("This works!");
+        
+    }
+});
+
+//BACK TO MENU BUTTON(s)
+var menu = new Button({
+    x:125,
+    y: 315,
+    width: 150,
+    height: 50,
+    label: "Back to Menu",
+    onClick: function() {
+        
+        currentScene = 0;
+        stillPlaying = true;
+        
+    }
+});
 
 
 //TILE CONSTRUCTOR
@@ -270,12 +318,13 @@ var makeBombs = function() {
 };
 var clearBoard = function() {
     
-    for (var i = 0; i < 14; i++) {
+    for (var i = 0; i < 15; i++) {
         
-        for (var j = 0; j < 19; j++) {
+        for (var j = 0; j < 20; j++) {
             
             grid[i][j].hasFlag = false;
             grid[i][j].clicked = true;
+            grid[i][j].draw();
             
         }
         
@@ -291,7 +340,6 @@ var clearNeighbors = function(i,j) {
         else if (grid[i][j].label === "0") {
             
             grid[i][j].clicked = true;
-            grid[i][j].draw();
             
             clearNeighbors(i-1,j-1);
             clearNeighbors(i-1,j);
@@ -306,7 +354,6 @@ var clearNeighbors = function(i,j) {
         else {
             
             grid[i][j].clicked = true;
-            grid[i][j].draw();
             
         }
     
@@ -333,6 +380,14 @@ var gameplay = function() {
             if (millis() - startTime > 100 && mouseClicked && grid[i][j].mouseIsInside() && mouseButton === LEFT && !grid[i][j].hasFlag && !grid[i][j].clicked) {
                 
                 clearNeighbors(i,j);
+                
+                if (grid[i][j].isBomb === 1) {
+                    
+                    clearBoard();
+                    stillPlaying = false;
+                    endGameMessage = "Lost!";
+                    
+                }
                 
             }
             else if (mouseClicked && grid[i][j].mouseIsInside() && mouseButton === RIGHT) {
@@ -385,16 +440,71 @@ var gameplay = function() {
     
 };
 
+//not done
+var endScreen = function() {
+    
+    textAlign(CENTER, CENTER);
+    background(168, 168, 168);
+    noStroke();
+    
+    //DARK SHADED
+    fill(82, 82, 82);
+    rect(0,0,400, 400);
+    
+    //LIGHT SHADED
+    fill(191, 191, 191);
+    triangle(400,400,400,0,0,400);
+    
+    //CENTER GREY
+    fill(168, 168, 168);
+    rect(3,3,394, 395);
+    
+    //SHADOW TEXT
+    fill(82, 82, 82);
+    textSize(52);
+    textFont(createFont('monospace'));
+    text("You " + endGameMessage, width/2, 74);
+    textSize(32);
+    text("Bombs Remaining: " + numberOfFlags,width/2,200);
+    text("Time: " + time + " seconds",width/2,250);
+    
+    //REGULAR TEXT
+    fill(255, 255, 255);
+    textSize(52);
+    textFont(createFont('monospace'));
+    text("You " + endGameMessage, width/2, 71);
+    textSize(32);
+    text("Bombs Remaining: " + numberOfFlags,width/2,198);
+    text("Time: " + time + " seconds",width/2,248);
+    
+    //BUTTON(S)
+    menu.draw();
+    
+};
+
 //MAIN DRAW LOOP
 
 draw = function() {
     
-    time = floor((millis() - startTime)/1000);
+    if (stillPlaying) {
+        
+        time = floor((millis() - startTime)/1000);
+        
+    }
     
-    if (currentScene === 0) {}
-    else if (currentScene === 1){
+    if (currentScene === 0) {
+        
+        startButton.draw();
+        
+    }
+    else if (currentScene === 1 && stillPlaying) {
         
         gameplay();
+        
+    }
+    else if (currentScene === 1 && !stillPlaying) {
+        
+        endScreen();
         
     }
     
@@ -413,14 +523,28 @@ mouseReleased = function () {
         
         currentScene = 1;
         
+        stillPlaying = true;
+        
         startTime = millis();
         
     }
     
-    if (currentScene === 1 && true) {
+    if (currentScene === 1 && stillPlaying) {
         
         currentScene = 1;
+        
+        //GAME BUTTON LOGIC
+        
+        
+        
         //gameplay();
+        
+    }
+    else if (currentScene === 1 && !stillPlaying) {
+        
+        //END SCREEN BUTTON LOGIC
+        menu.handleMouseClick();
+        
         
     }
     
