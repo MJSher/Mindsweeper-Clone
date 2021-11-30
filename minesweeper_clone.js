@@ -204,7 +204,7 @@ var button = new Button({
     }
 });
 */
-
+    
 //START BUTTON: Starts the game
 var startButton = new Button({
     x: 165,
@@ -233,10 +233,10 @@ var nextButton = new Button({
 });
 
 
-mouseClicked = function() {
+/*mouseClicked = function() {
     startButton.handleMouseClick();
     nextButton.handleMouseClick();
-};
+};*/
 
 //FUNCTIONS FOR SCENES (DISPLAY ONLY: DO NOT AFFECT GAMEPLAY)
 
@@ -653,21 +653,16 @@ var runStart = function() {
 
 //SCENES
 //Not done
-var splashScreen = function() {
+var splashScreen = function() 
+{
  
     textAlign(LEFT, BOTTOM);
-    background(168, 168, 168);
+    background(82, 82, 82);
     noStroke();
-    
-    //DARK SHADED
-    fill(82, 82, 82);
-    rect(0,0,400, 397);
     
     //LIGHT SHADED
     fill(191, 191, 191);
-    rect(390,48,400, 397);
-    triangle(400,100,400,0,300,100);
-    rect(-7,397,400,97);
+    triangle(400,400,400,0,0,400);
     
     //CENTER GREY
     fill(168, 168, 168);
@@ -995,12 +990,8 @@ var gameplay = function() {
 var endScreen = function() {
     
     textAlign(CENTER, CENTER);
-    background(168, 168, 168);
+    background(82, 82, 82);
     noStroke();
-    
-    //DARK SHADED
-    fill(82, 82, 82);
-    rect(0,0,400, 400);
     
     //LIGHT SHADED
     fill(191, 191, 191);
