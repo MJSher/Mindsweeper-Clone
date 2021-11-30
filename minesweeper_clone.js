@@ -187,9 +187,9 @@ Button.prototype.isMouseInside = function() {
            mouseY < (this.y + this.height);
 };
 
-Button.prototype.handleMouseClick = function() {
+Button.prototype.handleMouseClick = function(x) {
     if (this.isMouseInside()) {
-        this.onClick();
+        this.onClick(x);
     }
 };
 
@@ -205,16 +205,19 @@ var button = new Button({
 });
 */
     
-//START BUTTON: Starts the game
-var startButton = new Button({
-    x: 165,
-    y: 321,
-    width: 75,
-    label: "Start",
+//BUTTONS (START BUTTON FURTHER DOWN)
+
+//BACK TO MENU BUTTON(s)
+var menu = new Button({
+    x:125,
+    y: 315,
+    width: 150,
+    height: 50,
+    label: "Back to Menu",
     onClick: function() {
-        currentScene ++;
-        //gameScene();
-        //println("This works!");
+        
+        currentScene = 0;
+        stillPlaying = true;
         
     }
 });
@@ -224,11 +227,8 @@ var nextButton = new Button({
     y: 328,
     width: 80,
     label: "Next",
-    onClick: function() {
-        currentScene ++;
-        //gameScene();
-        println("This works!");
-        
+    onClick: function(x) {
+        currentScene = x;
     }
 });
 
@@ -353,39 +353,6 @@ var tileNumInstructions = function(num, x, y){
             text(num, x+5, y-1);
     
 };
-    
-    
-//BUTTONS
-
-//START BUTTON: Starts the game
-var startButton = new Button({
-    x: 173,
-    y: 321,
-    width: 75,
-    height: 50,
-    label: "Start",
-    onClick: function() {
-        //currentScene = 1;
-        //gameScene();
-        println("This works!");
-        
-    }
-});
-
-//BACK TO MENU BUTTON(s)
-var menu = new Button({
-    x:125,
-    y: 315,
-    width: 150,
-    height: 50,
-    label: "Back to Menu",
-    onClick: function() {
-        
-        currentScene = 0;
-        stillPlaying = true;
-        
-    }
-});
 
 
 //TILE CONSTRUCTOR
@@ -621,8 +588,6 @@ var clearNeighbors = function(i,j) {
     
 };
 
-//RUN CHECK FOR ALL LABELS AND BOMB SQUARES
-
 //CREATE GRID OF TILES
 
 var runStart = function() {
@@ -650,6 +615,27 @@ var runStart = function() {
     checkLabels();
     
 };
+
+//BUTTONE REQUIRING CODE ABOVE
+//START BUTTON: Starts the game
+var startButton = new Button({
+    x: 173,
+    y: 321,
+    width: 75,
+    height: 50,
+    label: "Start",
+    onClick: function() {
+        
+        currentScene = 1;
+        
+        runStart();
+        
+        stillPlaying = true;
+        
+        startTime = millis();
+        
+    }
+});
 
 //SCENES
 //Not done
@@ -1078,21 +1064,14 @@ mouseReleased = function () {
     
     mouseClicked = true;
     
-    if (currentScene === 0 && true) {
+    if (currentScene === 0) {
         
-        runStart();
-        
-        currentScene = 1;
-        
-        stillPlaying = true;
-        
-        startTime = millis();
+        startButton.handleMouseClick();
+        //instructionButton.handleMouseClick();
         
     }
     
     if (currentScene === 1 && stillPlaying) {
-        
-        currentScene = 1;
         
         //GAME BUTTON LOGIC
       
@@ -1103,26 +1082,23 @@ mouseReleased = function () {
         //END SCREEN BUTTON LOGIC
         menu.handleMouseClick();
         
-        
     }    
 
     
-    if (currentScene === 1 && false) {
+    if (currentScene === 2) {
         
-        currentScene ++;
-        //gameplay();
-        
-    }
-    else if (currentScene === 2 && false) {
-        
-        currentScene ++;
-        //gameplay();
+        nextButton.handleMouseClick(3);
         
     }
-    else if (currentScene === 3 && false) {
+    else if (currentScene === 3) {
         
-        currentScene ++;
-      
+        nextButton.handleMouseClick(4);
+        
+    }
+    else if (currentScene === 4) {
+        
+        nextButton.handleMouseClick(0);
+        
     }
     
 };
