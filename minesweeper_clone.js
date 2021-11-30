@@ -5,11 +5,15 @@ By Madison and JD
 */
     
 //VARIABLES
+var grid = [];
+var bombSelectGrid = [];
 var currentScene = 0;
 var numberOfFlags = 25;
 var time = 0;
 var startTime = 0;
 var mouseClicked;
+var stillPlaying = false;
+var endGameMessage;
 textFont(createFont('monospace'));
 
 //BITMOJIS
@@ -167,14 +171,13 @@ Button.prototype.draw = function() {
     //CENTER GREY
     fill(224, 224, 224);
     rect(this.x + 3,this.y + 3,this.width-6,this.height-6);
-    
-    
+
     //TEXT
     fill(0, 0, 0);
     textSize(19);
     textAlign(CENTER, CENTER);
     text(this.label, this.x + this.width/2, this.y + this.height/2);
-    
+
 };
 
 Button.prototype.isMouseInside = function() {
@@ -351,6 +354,38 @@ var tileNumInstructions = function(num, x, y){
     
 };
     
+    
+//BUTTONS
+
+//START BUTTON: Starts the game
+var startButton = new Button({
+    x: 173,
+    y: 321,
+    width: 75,
+    height: 50,
+    label: "Start",
+    onClick: function() {
+        //currentScene = 1;
+        //gameScene();
+        println("This works!");
+        
+    }
+});
+
+//BACK TO MENU BUTTON(s)
+var menu = new Button({
+    x:125,
+    y: 315,
+    width: 150,
+    height: 50,
+    label: "Back to Menu",
+    onClick: function() {
+        
+        currentScene = 0;
+        stillPlaying = true;
+        
+    }
+});
 
 
 //TILE CONSTRUCTOR
@@ -496,27 +531,18 @@ Tile.prototype.draw = function() {
     
 };
 
-//CREATE GRID OF TILES
-var grid = [];
-var bombSelectGrid = [];
 
-for (var i = 0; i < 15; i++) {
-    
-    var temp = [];
-    
-    for (var j = 0; j < 20; j++) {
-        
-        temp.push(new Tile(j * 20, 100 + i * 20, i, j));
-        bombSelectGrid.push([i,j]);
-        
-    }
-    
-    grid.push(temp);
-    
-    
-}
 
 //FUNCTIONS
+var checkSingleLabel = function(i,j) {
+    
+    if (i >= 0 && i <= 14 && j >= 0 && j <= 19) {
+        
+        return grid[i][j].isBomb;
+        
+    }
+    else {return 0;}
+};
 var checkLabels = function() {
     
    for (var i = 0; i < 15; i++) {
@@ -524,52 +550,8 @@ var checkLabels = function() {
         for (var j = 0; j < 20; j++) {
             
             if (grid[i][j].isBomb !== 1) {
-            
-                if (i === 0 && j === 0) {
-                    
-                    grid[0][0].label = (grid[0][1].isBomb + grid[1][1].isBomb + grid[1][0].isBomb).toString();
-                    
-                }
-                else if (i === 0 && j === 19)   {
-                    
-                    grid[0][19].label = (grid[0][18].isBomb + grid[1][18].isBomb + grid[1][19].isBomb).toString();
-                    
-                }
-                else if (i === 14 && j === 0)   {
-                    
-                    grid[14][0].label = (grid[14][1].isBomb + grid[13][1].isBomb + grid[13][0].isBomb).toString();
-                    
-                }
-                else if (i === 14 && j === 19)  {
-                    
-                    grid[14][19].label = (grid[14][18].isBomb + grid[13][18].isBomb + grid[13][19].isBomb).toString();
-                    
-                }
-                else if (i === 0)   {
-                    
-                    grid[i][j].label = (grid[i][j-1].isBomb + grid[i][j+1].isBomb + grid[i+1][j-1].isBomb + grid[i+1][j].isBomb + grid[i+1][j+1].isBomb).toString();
-                    
-                }
-                else if (i === 14)  {
-                    
-                    grid[i][j].label = (grid[i][j-1].isBomb + grid[i][j+1].isBomb + grid[i-1][j-1].isBomb + grid[i-1][j].isBomb + grid[i-1][j+1].isBomb).toString();
-                    
-                }
-                else if (j === 0)   {
-                    
-                    grid[i][j].label = (grid[i-1][j].isBomb + grid[i+1][j].isBomb + grid[i-1][j+1].isBomb + grid[i][j+1].isBomb + grid[i+1][j+1].isBomb).toString();
-                    
-                }
-                else if (j === 19)  {
-                    
-                    grid[i][j].label = (grid[i-1][j].isBomb + grid[i+1][j].isBomb + grid[i-1][j-1].isBomb + grid[i][j-1].isBomb + grid[i+1][j-1].isBomb).toString();
-                    
-                }
-                else                {
-                    
-                    grid[i][j].label = (grid[i-1][j-1].isBomb + grid[i-1][j].isBomb + grid[i-1][j+1].isBomb + grid[i][j-1].isBomb + grid[i][j+1].isBomb + grid[i+1][j-1].isBomb + grid[i+1][j].isBomb + grid[i+1][j+1].isBomb).toString();
-                    
-                }
+                
+                grid[i][j].label = (checkSingleLabel(i-1,j-1) + checkSingleLabel(i-1,j) + checkSingleLabel(i-1,j+1) + checkSingleLabel(i,j-1) + checkSingleLabel(i,j+1) + checkSingleLabel(i+1,j-1) + checkSingleLabel(i+1,j) + checkSingleLabel(i+1,j+1)).toString();
                 
             }
             
@@ -593,6 +575,21 @@ var makeBombs = function() {
     
     
 };
+var clearBoard = function() {
+    
+    for (var i = 0; i < 15; i++) {
+        
+        for (var j = 0; j < 20; j++) {
+            
+            grid[i][j].hasFlag = false;
+            grid[i][j].clicked = true;
+            grid[i][j].draw();
+            
+        }
+        
+    }
+    
+};
 
 
 var clearNeighbors = function(i,j) {
@@ -603,7 +600,6 @@ var clearNeighbors = function(i,j) {
         else if (grid[i][j].label === "0") {
             
             grid[i][j].clicked = true;
-            grid[i][j].draw();
             
             clearNeighbors(i-1,j-1);
             clearNeighbors(i-1,j);
@@ -618,7 +614,6 @@ var clearNeighbors = function(i,j) {
         else {
             
             grid[i][j].clicked = true;
-            grid[i][j].draw();
             
         }
     
@@ -628,8 +623,33 @@ var clearNeighbors = function(i,j) {
 
 //RUN CHECK FOR ALL LABELS AND BOMB SQUARES
 
-makeBombs();
-checkLabels();
+//CREATE GRID OF TILES
+
+var runStart = function() {
+    
+    grid = [];
+    bombSelectGrid = [];
+    
+    for (var i = 0; i < 15; i++) {
+        
+        var temp = [];
+        
+        for (var j = 0; j < 20; j++) {
+            
+            temp.push(new Tile(j * 20, 100 + i * 20, i, j));
+            bombSelectGrid.push([i,j]);
+            
+        }
+        
+        grid.push(temp);
+        
+        
+    }
+    
+    makeBombs();
+    checkLabels();
+    
+};
 
 //SCENES
 //Not done
@@ -912,6 +932,14 @@ var gameplay = function() {
                 
                 clearNeighbors(i,j);
                 
+                if (grid[i][j].isBomb === 1) {
+                    
+                    clearBoard();
+                    stillPlaying = false;
+                    endGameMessage = "Lost!";
+                    
+                }
+                
             }
             else if (mouseClicked && grid[i][j].mouseIsInside() && mouseButton === RIGHT) {
                 
@@ -963,35 +991,89 @@ var gameplay = function() {
     
 };
 
+//not done
+var endScreen = function() {
+    
+    textAlign(CENTER, CENTER);
+    background(168, 168, 168);
+    noStroke();
+    
+    //DARK SHADED
+    fill(82, 82, 82);
+    rect(0,0,400, 400);
+    
+    //LIGHT SHADED
+    fill(191, 191, 191);
+    triangle(400,400,400,0,0,400);
+    
+    //CENTER GREY
+    fill(168, 168, 168);
+    rect(3,3,394, 395);
+    
+    //SHADOW TEXT
+    fill(82, 82, 82);
+    textSize(52);
+    textFont(createFont('monospace'));
+    text("You " + endGameMessage, width/2, 74);
+    textSize(32);
+    text("Bombs Remaining: " + numberOfFlags,width/2,200);
+    text("Time: " + time + " seconds",width/2,250);
+    
+    //REGULAR TEXT
+    fill(255, 255, 255);
+    textSize(52);
+    textFont(createFont('monospace'));
+    text("You " + endGameMessage, width/2, 71);
+    textSize(32);
+    text("Bombs Remaining: " + numberOfFlags,width/2,198);
+    text("Time: " + time + " seconds",width/2,248);
+    
+    //BUTTON(S)
+    menu.draw();
+    
+};
+
 //MAIN DRAW LOOP
 
 draw = function() {
     
-    time = floor((millis() - startTime)/1000);
+    if (stillPlaying) {
+        
+        time = floor((millis() - startTime)/1000);
+        
+    }
     
     if (currentScene === 0) {
+      
         splashScreen();
+      
     }
-    else if (currentScene === 1){
-        
-        instructScreen1();
-        
-    }
-    else if (currentScene === 2){
-        
-        instructScreen2();
-        
-    }
-    else if (currentScene === 3){
-        
-        instructScreen3();
-        
-    }
-    else if (currentScene === 4){
+    else if (currentScene === 1 && stillPlaying){
         
         gameplay();
         
     }
+    else if (currentScene === 1 && !stillPlaying) {
+        
+        endScreen();
+        
+    }
+    else if (currentScene === 2){
+        
+        instructScreen1();
+        
+    }
+    else if (currentScene === 3){
+        
+        instructScreen2();
+        
+    }
+    else if (currentScene === 4){
+        
+        instructScreen3();
+        
+    }
+    
     
     
     mouseClicked = false;
@@ -1007,27 +1089,49 @@ mouseReleased = function () {
     
     if (currentScene === 0 && true) {
         
-        currentScene ++;
+        runStart();
+        
+        currentScene = 1;
+        
+        stillPlaying = true;
+        
+        startTime = millis();
+        
     }
     
-    else if (currentScene === 1 && true) {
+    if (currentScene === 1 && stillPlaying) {
+        
+        currentScene = 1;
+        
+        //GAME BUTTON LOGIC
+      
+        
+    }
+    else if (currentScene === 1 && !stillPlaying) {
+        
+        //END SCREEN BUTTON LOGIC
+        menu.handleMouseClick();
+        
+        
+    }    
+
+    
+    if (currentScene === 1 && false) {
         
         currentScene ++;
         //gameplay();
         
     }
-    else if (currentScene === 2 && true) {
+    else if (currentScene === 2 && false) {
         
         currentScene ++;
         //gameplay();
         
     }
-    else if (currentScene === 3 && true) {
+    else if (currentScene === 3 && false) {
         
         currentScene ++;
-        startTime = millis();
-        //gameplay();
-        
+      
     }
     
 };
