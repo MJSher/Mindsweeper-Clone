@@ -232,11 +232,48 @@ var nextButton = new Button({
     }
 });
 
+//START BUTTON: Starts the game
+var startButton = new Button({
+    x: 97,
+    y: 321,
+    width: 75,
+    height: 50,
+    label: "Start",
+    onClick: function() {
+        
+        currentScene = 5;
+        
+    }
+});
 
-/*mouseClicked = function() {
+var instructionsButton = new Button({
+    x: 192,
+    y: 321,
+    width: 144,
+    height: 50,
+    label: "Instructions",
+    onClick: function() {
+        
+        currentScene = 2;
+    
+    }
+});
+
+//Button that changes scenes for the game 
+
+
+
+
+
+
+/*
+mouseClicked = function() {
     startButton.handleMouseClick();
     nextButton.handleMouseClick();
-};*/
+    easyButton.handleMouseClick();
+    mediumButton.handleMouseClick();
+    hardButton.handleMouseClick();
+}; */
 
 //FUNCTIONS FOR SCENES (DISPLAY ONLY: DO NOT AFFECT GAMEPLAY)
 
@@ -617,14 +654,54 @@ var runStart = function() {
 };
 
 //BUTTONE REQUIRING CODE ABOVE
-//START BUTTON: Starts the game
-var startButton = new Button({
-    x: 173,
-    y: 321,
-    width: 75,
-    height: 50,
-    label: "Start",
+var easyButton = new Button({
+    x: 161,
+    y: 179,
+    width: 80,
+    label: "Easy",
     onClick: function() {
+        
+        numberOfFlags = 15;
+        
+        currentScene = 1;
+        
+        runStart();
+        
+        stillPlaying = true;
+        
+        startTime = millis();
+        
+    }
+});
+
+var mediumButton = new Button({
+    x: 161,
+    y: 256,
+    width: 80,
+    label: "Medium",
+    onClick: function() {
+        
+        numberOfFlags = 25;
+        
+        currentScene = 1;
+        
+        runStart();
+        
+        stillPlaying = true;
+        
+        startTime = millis();
+        
+    }
+});
+
+var hardButton = new Button({
+    x: 161,
+    y: 328,
+    width: 80,
+    label: "Hard",
+    onClick: function() {
+        
+        numberOfFlags = 35;
         
         currentScene = 1;
         
@@ -681,6 +758,7 @@ var splashScreen = function()
     
     //Button
     startButton.draw();
+    instructionsButton.draw();
     
 };
 
@@ -901,6 +979,54 @@ var instructScreen3 = function()
     
 };
 
+var difficultyScreen = function()
+{
+    
+    background(168, 168, 168);
+    noStroke();
+    
+    //DARK SHADED
+    fill(82, 82, 82);
+    rect(0,0,400, 397);
+    
+    //LIGHT SHADED
+    fill(191, 191, 191);
+    rect(390,48,400, 397);
+    triangle(400,100,400,0,300,100);
+    rect(-7,397,400,97);
+    
+    //CENTER GREY
+    fill(168, 168, 168);
+    rect(3,3,394, 395);
+    
+    //SHADOW TEXT
+    fill(82, 82, 82);
+    textSize(35);
+    textFont(createFont('monospace'));
+    text("SELECT A DIFFICULTY", 200, 57);
+    textSize(15);
+    text("(note: this will determine the number of \nbombs that will be in the game)", 210, 89.5);
+    
+    
+    //REGULAR TEXT
+    fill(255, 255, 255);
+    textSize(35);
+    textFont(createFont('monospace'));
+    text("SELECT A DIFFICULTY", 200, 54);
+    textSize(15);
+    text("(note: this will determine the number of \nbombs that will be in the game)", 210, 88);
+    
+    
+    noStroke();
+    
+    //Button
+    easyButton.draw();
+    mediumButton.draw();
+    hardButton.draw();
+
+    
+};
+
 
 //Not done
 var gameplay = function() {
@@ -1014,6 +1140,13 @@ var endScreen = function() {
 
 draw = function() {
     
+    /*
+    REFERENCE FOR SCENE NUMBERS:
+    0 = Splash Scene
+    1 = Gameplay
+    2, 3, and 4 = Instructions
+    5 = difficulty setting
+    */
     if (stillPlaying) {
         
         time = floor((millis() - startTime)/1000);
@@ -1050,6 +1183,12 @@ draw = function() {
         instructScreen3();
         
     }
+    else if (currentScene === 5){
+        
+         difficultyScreen();
+        //difficultyScene();
+        
+    }
     
     
     
@@ -1067,7 +1206,7 @@ mouseReleased = function () {
     if (currentScene === 0) {
         
         startButton.handleMouseClick();
-        //instructionButton.handleMouseClick();
+        instructionsButton.handleMouseClick();
         
     }
     
@@ -1098,6 +1237,13 @@ mouseReleased = function () {
     else if (currentScene === 4) {
         
         nextButton.handleMouseClick(0);
+        
+    }
+    else if (currentScene === 5) {
+        
+        easyButton.handleMouseClick(0);
+        mediumButton.handleMouseClick(0);
+        hardButton.handleMouseClick(0);
         
     }
     
