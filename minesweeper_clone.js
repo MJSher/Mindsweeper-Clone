@@ -5,15 +5,27 @@ By Madison and JD
 */
     
 //VARIABLES
+//Main grid which will contain the tiles of the game grid
 var grid = [];
+
+//A virtual grid that is used to decide what grid tiles in the grid array will be bombs
 var bombSelectGrid = [];
+//Current scene of the game
 var currentScene = 0;
+//Number of flags/bombs
 var numberOfFlags = 25;
+//Global time variable declaration
 var time = 0;
+//Global starttime declaration
 var startTime = 0;
+//Mouseclicked variable, to prevent any clicking on tiles
 var mouseClicked;
+//Used to detect if the game is still running or if you have fulfilled a win or lose condition
 var stillPlaying = false;
+//Global declaration of the endGameMessage, which functions as a variable end screen value if you lose or win
 var endGameMessage;
+
+//Changes font to monospace
 textFont(createFont('monospace'));
 
 //BITMOJIS
@@ -207,7 +219,7 @@ var button = new Button({
     
 //BUTTONS (START BUTTON FURTHER DOWN)
 
-//BACK TO MENU BUTTON(s)
+//BACK TO MENU BUTTON(s) (in the lose/win screen, this button takes you back to the menu)
 var menu = new Button({
     x:125,
     y: 315,
@@ -222,6 +234,7 @@ var menu = new Button({
     }
 });
 
+//NEXT BUTTON FOR INSTRUCTIONS (can change from one scene to any other scene with a parameter)
 var nextButton = new Button({
     x: 161,
     y: 328,
@@ -232,7 +245,7 @@ var nextButton = new Button({
     }
 });
 
-//START BUTTON: Starts the game
+//START BUTTON (takes you to the difficulty select screen)
 var startButton = new Button({
     x: 97,
     y: 321,
@@ -246,8 +259,9 @@ var startButton = new Button({
     }
 });
 
+//INSTRUCTIONS (takes you to the first instructions scene)
 var instructionsButton = new Button({
-    x: 192,
+    x: 235,
     y: 321,
     width: 144,
     height: 50,
@@ -259,31 +273,17 @@ var instructionsButton = new Button({
     }
 });
 
-//Button that changes scenes for the game 
-
-
-
-
-
-
-/*
-mouseClicked = function() {
-    startButton.handleMouseClick();
-    nextButton.handleMouseClick();
-    easyButton.handleMouseClick();
-    mediumButton.handleMouseClick();
-    hardButton.handleMouseClick();
-}; */
 
 //FUNCTIONS FOR SCENES (DISPLAY ONLY: DO NOT AFFECT GAMEPLAY)
 
-var drawBombInstructions = function(x, y)
-{
+//Draws a stylized large bomb for the instructions
+var drawBombInstructions = function(x, y) {
     fill(0, 0, 0);
     ellipse(x + 200, y +224, 70, 70);
     rect(x + 192, y +171, 17, 50);
 };
 
+//Draws a non-game tile for the instructions
 var tileDrawInstructions = function(x, y) {
         noStroke();
         fill(224, 224, 224);
@@ -294,6 +294,7 @@ var tileDrawInstructions = function(x, y) {
         rect(x + 2, y + 2, 16,16);
 };
 
+//Draws a non-game flag for the instructions
 var flagDrawInstructions = function(x, y) {
     fill(168, 168, 168);
     rect(x , y, 20, 20);
@@ -304,6 +305,7 @@ var flagDrawInstructions = function(x, y) {
     
 };
 
+//Draws a non-game bomb for the instructions
 var tileBombDrawInstructions = function(x, y) {
     fill(168, 168, 168);
     rect(x , y, 20, 20);
@@ -314,6 +316,7 @@ var tileBombDrawInstructions = function(x, y) {
     
 };
 
+//Draws a stylized large flag for the instructions
 var bigFlagDrawInstructions = function(x, y) {
     fill(168, 168, 168);
     fill(255, 0, 0);
@@ -324,6 +327,7 @@ var bigFlagDrawInstructions = function(x, y) {
     
 };
 
+//Draws a non-game number for the instructions
 var tileNumInstructions = function(num, x, y){
     fill(168, 168, 168);
     rect(x , y, 20, 20);
@@ -392,7 +396,7 @@ var tileNumInstructions = function(num, x, y){
 };
 
 
-//TILE CONSTRUCTOR
+//TILE CONSTRUCTOR (used in the gameplay(); scene
 var Tile = function(x,y,i,j) {
     
     this.row = i;
@@ -407,6 +411,7 @@ var Tile = function(x,y,i,j) {
     
 };
 
+//Returns true or false if the mouse is inside or outside of the tile respectively
 Tile.prototype.mouseIsInside = function() {
     
     if (mouseX > this.x && mouseX < this.x + 20 && mouseY > this.y && mouseY < this.y + 20)     {
@@ -419,9 +424,10 @@ Tile.prototype.mouseIsInside = function() {
     
 };
 
-//Not done
+//Draws the tile in game (depending on conditions, can draw things on top of tiles)
 Tile.prototype.draw = function() {
     
+    //If the tile hasnt been clicked
     if (!this.clicked) {
         
         noStroke();
@@ -432,6 +438,7 @@ Tile.prototype.draw = function() {
         fill(168, 168, 168);
         rect(this.x + 2,this.y + 2,16,16);
         
+        //If the tile has been right clicked and has a flag
         if (this.hasFlag) {
             
             fill(255, 0, 0);
@@ -444,13 +451,14 @@ Tile.prototype.draw = function() {
         
     }
     
+    //If the tile has been clicked and doesnt have a flag on it
     if (this.clicked && !this.hasFlag) {
         
         stroke(71, 71, 71);
         fill(168, 168, 168);
         rect(this.x,this.y,20,20);
         
-        //can be changed...
+        //Checks to see if the tile is a bomb. If not, draw its label with a specific color
         if (this.isBomb !== 1) {
             
             textSize(20);
@@ -520,6 +528,8 @@ Tile.prototype.draw = function() {
             text(this.label,this.x+5,this.y-1);
             
         }
+        
+        //If this tile is a bomb, draw the bomb when clicked
         if (this.isBomb === 1) {
             
             noStroke();
@@ -538,6 +548,8 @@ Tile.prototype.draw = function() {
 
 
 //FUNCTIONS
+
+//Checks the isBomb element, and returns the value. If the grid point doesnt exist in the grid array, it returns 0
 var checkSingleLabel = function(i,j) {
     
     if (i >= 0 && i <= 14 && j >= 0 && j <= 19) {
@@ -547,6 +559,8 @@ var checkSingleLabel = function(i,j) {
     }
     else {return 0;}
 };
+
+//Runs a function that detects all of the bombs around it by detecting isBomb using eight checkSingleLabel function
 var checkLabels = function() {
     
    for (var i = 0; i < 15; i++) {
@@ -564,14 +578,19 @@ var checkLabels = function() {
     }
     
 };
+
+//Uses the virtual grid bombSelectGrid to set a random tile, and specific number of tiles to be bombs
 var makeBombs = function() {
     
     for (var i = 0; i < numberOfFlags; i++) {
         
+        //Selects a random index in the bombselectgrid
         var x = round(random(0,bombSelectGrid.length - 1));
         
+        //Changes the grid[i][j] index to be a bomb outside of the virtual array
         grid[bombSelectGrid[x][0]][bombSelectGrid[x][1]].isBomb = 1;
         
+        //Deletes the index from the grid so it cant happen twice
         bombSelectGrid.splice(x,1);
         
         
@@ -579,23 +598,51 @@ var makeBombs = function() {
     
     
 };
-var clearBoard = function() {
+
+//Goes through all tiles, and if any bomb has no flag over it, returns the lose end screen and stops playing. Else, return win screen and stop playing
+var checkBombs = function() {
     
-    for (var i = 0; i < 15; i++) {
-        
-        for (var j = 0; j < 20; j++) {
+    if (numberOfFlags === 0) {
+    
+        for (var i = 0; i < 15; i++) {
             
-            grid[i][j].hasFlag = false;
-            grid[i][j].clicked = true;
-            grid[i][j].draw();
+            for (var j = 0; j < 20; j++) {
+                
+                if (grid[i][j].isBomb === 1 && grid[i][j].hasFlag === false) {
+                    
+                    stillPlaying = false;
+                    
+                    endGameMessage = "Lost!";
+                    
+                    return;
+                    
+                }
+                
+            }
             
         }
         
+        stillPlaying = false;
+        
+        endGameMessage = "Won!";
+        
+        return;
+        
     }
+    else {
+        
+        stillPlaying = false;
+        
+        endGameMessage = "Lost!";
+        
+        return;
+        
+    }
+    
     
 };
 
-
+//If the tile clicked has a label of zero (no bombs around it) recursively run this function for the eight surrounding tiles (if they exist on the grid)
 var clearNeighbors = function(i,j) {
     
     if (i >= 0 && i <= 14 && j >= 0 && j <= 19) {
@@ -627,6 +674,7 @@ var clearNeighbors = function(i,j) {
 
 //CREATE GRID OF TILES
 
+//Runs the set up for the game (functions explained above)
 var runStart = function() {
     
     grid = [];
@@ -653,7 +701,7 @@ var runStart = function() {
     
 };
 
-//BUTTONE REQUIRING CODE ABOVE
+//BUTTONS REQUIRING CODE ABOVE (difficulty buttons change the number of bombs/flags according to the selection, 15, 25, 35 respectively)
 var easyButton = new Button({
     x: 161,
     y: 179,
@@ -714,8 +762,24 @@ var hardButton = new Button({
     }
 });
 
+//The button when in the game, click when you believe you have flagged all the bombs
+var bombCheckButton = new Button ({
+    
+    x: 170,
+    y: 20,
+    width: 60,
+    height: 60,
+    label: " ",
+    onClick: function() {
+        
+        checkBombs();
+        
+    }
+    
+});
+
 //SCENES
-//Not done
+//Splash screen
 var splashScreen = function() 
 {
  
@@ -761,7 +825,7 @@ var splashScreen = function()
     instructionsButton.draw();
     
 };
-
+//First instruction scene
 var instructScreen1 = function()
 {
     
@@ -821,7 +885,7 @@ var instructScreen1 = function()
 
     
 };
-
+//Second instruction scene
 var instructScreen2 = function()
 {
     
@@ -887,7 +951,7 @@ var instructScreen2 = function()
 
     
 };
-
+//Third instruction scene
 var instructScreen3 = function()
 {
     
@@ -978,7 +1042,7 @@ var instructScreen3 = function()
 
     
 };
-
+//Difficulty selection screen
 var difficultyScreen = function()
 {
     
@@ -1026,9 +1090,7 @@ var difficultyScreen = function()
 
     
 };
-
-
-//Not done
+//Runs all code for the game. Further explination inside
 var gameplay = function() {
     
     for (var i = 0; i < 15; i++) {
@@ -1041,7 +1103,6 @@ var gameplay = function() {
                 
                 if (grid[i][j].isBomb === 1) {
                     
-                    clearBoard();
                     stillPlaying = false;
                     endGameMessage = "Lost!";
                     
@@ -1096,9 +1157,11 @@ var gameplay = function() {
     text(numberOfFlags.toString(),106,75);
     text(time,377,75);
     
+    //BUTTONS
+    bombCheckButton.draw();
+    
 };
-
-//not done
+//End screen for the game when won or lost
 var endScreen = function() {
     
     textAlign(CENTER, CENTER);
@@ -1185,8 +1248,7 @@ draw = function() {
     }
     else if (currentScene === 5){
         
-         difficultyScreen();
-        //difficultyScene();
+        difficultyScreen();
         
     }
     
@@ -1198,7 +1260,7 @@ draw = function() {
 
 //WHEN MOUSE RELEASED
 
-//Not done
+//Handles all button presses and enables mouse interaction with the tiles
 mouseReleased = function () {
     
     mouseClicked = true;
@@ -1213,7 +1275,7 @@ mouseReleased = function () {
     if (currentScene === 1 && stillPlaying) {
         
         //GAME BUTTON LOGIC
-      
+        bombCheckButton.handleMouseClick();
         
     }
     else if (currentScene === 1 && !stillPlaying) {
@@ -1241,9 +1303,9 @@ mouseReleased = function () {
     }
     else if (currentScene === 5) {
         
-        easyButton.handleMouseClick(0);
-        mediumButton.handleMouseClick(0);
-        hardButton.handleMouseClick(0);
+        easyButton.handleMouseClick();
+        mediumButton.handleMouseClick();
+        hardButton.handleMouseClick();
         
     }
     
