@@ -1159,6 +1159,7 @@ var gameplay = function() {
     
     //BUTTONS
     bombCheckButton.draw();
+    image(getImage("creatures/Winston"),179,30,40,40);
     
 };
 //End screen for the game when won or lost
