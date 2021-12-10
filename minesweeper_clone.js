@@ -229,7 +229,7 @@ var menu = new Button({
     onClick: function() {
         
         currentScene = 0;
-        stillPlaying = true;
+        stillPlaying = false;
         
     }
 });
@@ -254,7 +254,7 @@ var startButton = new Button({
     label: "Start",
     onClick: function() {
         
-        currentScene = 5;
+        currentScene = 6;
         
     }
 });
@@ -270,6 +270,17 @@ var instructionsButton = new Button({
         
         currentScene = 2;
     
+    }
+});
+
+//NOTE: This button is only for display for the winston/steven instructions. It is not supposed to have a function
+var displayButton = new Button({
+    x: 147,
+    y: 175,
+    width: 110,
+    height: 110,
+    label: " ",
+    onClick: function() {
     }
 });
 
@@ -824,6 +835,8 @@ var splashScreen = function()
     startButton.draw();
     instructionsButton.draw();
     
+    
+    
 };
 //First instruction scene
 var instructScreen1 = function()
@@ -1042,6 +1055,60 @@ var instructScreen3 = function()
 
     
 };
+//Fourth Instruction scene 
+var instructScreen4 = function()
+{
+    
+    background(168, 168, 168);
+    noStroke();
+    
+    //DARK SHADED
+    fill(82, 82, 82);
+    rect(0,0,400, 397);
+    
+    //LIGHT SHADED
+    fill(191, 191, 191);
+    rect(390,48,400, 397);
+    triangle(400,100,400,0,300,100);
+    rect(-7,397,400,97);
+    
+    //CENTER GREY
+    fill(168, 168, 168);
+    rect(3,3,394, 395);
+    
+    //SHADOW TEXT
+    
+    fill(82, 82, 82);
+    textSize(52);
+    textFont(createFont('monospace'));
+    textAlign(LEFT, CENTER);
+    text("RULES:", 130, 57);
+    textAlign(LEFT, TOP);
+    textSize(15);
+    text("There's also a special button that checks to \nsee if you have sucessfully put flags on all \nthe bombs if clicked. If you have, you win the \ngame! If not, you lose! So be careful...", 20, 89.5);
+    
+    
+    //REGULAR TEXT
+    fill(255, 255, 255);
+    textSize(52);
+    textAlign(LEFT, CENTER);
+    textFont(createFont('monospace'));
+    text("RULES:", 130, 54);
+    textSize(15);
+    textAlign(LEFT, TOP);
+    text("There's also a special button that checks to \nsee if you have sucessfully put flags on all \nthe bombs if clicked. If you have, you win the \ngame! If not, you lose! So be careful...", 20, 88);
+    
+    displayButton.draw();
+    image(getImage("creatures/Winston"),156,183,90,90);
+    
+    
+    noStroke();
+    
+    //Button
+    nextButton.draw();
+
+    
+};
 //Difficulty selection screen
 var difficultyScreen = function()
 {
@@ -1208,8 +1275,8 @@ draw = function() {
     REFERENCE FOR SCENE NUMBERS:
     0 = Splash Scene
     1 = Gameplay
-    2, 3, and 4 = Instructions
-    5 = difficulty setting
+    2, 3, 4 and 5 = Instructions
+    6 = difficulty setting
     */
     if (stillPlaying) {
         
@@ -1247,7 +1314,14 @@ draw = function() {
         instructScreen3();
         
     }
+    
     else if (currentScene === 5){
+        
+        instructScreen4();
+        
+    }
+    
+    else if (currentScene === 6){
         
         difficultyScreen();
         
@@ -1299,10 +1373,16 @@ mouseReleased = function () {
     }
     else if (currentScene === 4) {
         
+        nextButton.handleMouseClick(5);
+        
+    }
+    
+    else if (currentScene === 5) {
+        
         nextButton.handleMouseClick(0);
         
     }
-    else if (currentScene === 5) {
+    else if (currentScene === 6) {
         
         easyButton.handleMouseClick();
         mediumButton.handleMouseClick();
